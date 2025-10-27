@@ -1,15 +1,18 @@
-const users = [
-    {
-        id:1,
-        name:"jon"
-    }
-]
+// Use the published @prisma/client package which provides a runtime-compatible client
+const { PrismaClient } = require('../generated/prisma')
 
+const prisma = new PrismaClient()
 
-function findUser(id) {
-    const user = users.find(user => user.id === id);  // Using Array.find to find the user
-    return users[0] || null;  // Return the user object if found, otherwise return null
+async function createUser(username, email, password){
+	const user = await prisma.user.create({
+		data: { 
+            username,
+             email, 
+             password }
+	        })
+    console.log(user)
+	return user
+
 }
 
-
-module.exports = {findUser}
+module.exports = {createUser}

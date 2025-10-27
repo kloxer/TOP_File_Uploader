@@ -6,11 +6,15 @@ const userController = require("../controllers/userController")
 
 const passport = require('passport');
 
-userRouter.get("/", userController.firstFunction)
+// userRouter.get("/", userController.firstFunction)
+
 userRouter.post("/login", userController.login)
 
 userRouter.get("/:id", passport.authenticate('jwt', { session: false }), userController.getUserInfo)
 
+// userRouter.get("/register", (req,res)=>{
+//     res.status(200).send("register")
+// })
 
 userRouter.post("/register", userController.createUser)
 

@@ -6,12 +6,12 @@ require('dotenv').config()
 const userDb = require("../models/userDb")
 const bcrypt = require('bcrypt');
 
-const firstFunction = (req,res) =>{
-    return res.send("first func")
-}
+
 
 async function login (req,res) {
-         const user = {id:1, name:"jon"}
+        const user = {id:1, name:"jon"}
+        const username = req.body.username;
+        const password = req.body.password;
 
          jwt.sign({ user:user}, process.env.JWTSECRET, { algorithm: 'HS256' }, function(err, token) {
             if (err ){
@@ -19,9 +19,8 @@ async function login (req,res) {
             }
             return res.status(200).json({msg:"Logging in", token:token});
             });
-
+            
 }
-
 
 async function createUser (req,res) {
     console.log(req.body)
@@ -31,19 +30,16 @@ async function createUser (req,res) {
         const password = req.body.password;
         const hashedPwd = await bcrypt.hash(password,10)
         const user = await userDb.createUser(username, email, hashedPwd)
-        return res.status(201).send({success:true, user:user})
+        return res.status(201).redirect("/register?success=Account%20Created")
     }
     catch(err)
     {   
         if (err.code === 'P2002'){
             const field = err.meta?.target?.[0];
-            return res.status(400).json({
-                success:false,
-                msg:`That ${field} is already in use`,
-            })
-        }
+            return res.status(400).redirect(`/register?error=That%20${field}%20is%20already%20in%20use`);
+                }
         console.log(err)
-        return res.status(500).send({success:false, msg:"Internal server error"})
+        return res.status(500).redirect('/register?error=Internal%20server%20error');    
     }
 
 }
@@ -52,4 +48,4 @@ const getUserInfo = (req,res) =>{
     return res.json({user:req.user, params:req.params.id})
 }
 
-module.exports={firstFunction, login, createUser, getUserInfo}
+module.exports={ login, createUser, getUserInfo}

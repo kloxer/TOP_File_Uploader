@@ -15,4 +15,14 @@ async function createUser(username, email, password){
 
 }
 
-module.exports = {createUser}
+async function findUser(usernameId){
+    console.log("here Test")
+    const user = await prisma.user.findUnique({
+        where:{
+            id : usernameId
+        }
+    })
+    return user
+}
+
+module.exports = {createUser, findUser}

@@ -11,6 +11,37 @@
         <main class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
             <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Create an account</h1>
 
+                        <% if (error) { %>
+                            <div role="alert" class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+                                <div class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.68-1.36 3.445 0l5.516 9.81A1.75 1.75 0 0116.99 16H3.01a1.75 1.75 0 01-1.228-2.091l5.475-9.81zM10 12a1 1 0 100 2 1 1 0 000-2zm.75-6.75a.75.75 0 10-1.5 0v4.5a.75.75 0 001.5 0v-4.5z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-red-800">There was a problem</p>
+                                        <p class="mt-1 text-sm text-red-700"><%= error %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                        <% if (success) { %>
+                            <div role="status" class="mb-4 rounded-md border border-green-200 bg-green-50 px-4 py-3">
+                                <div class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-green-800">Success</p>
+                                        <p class="mt-1 text-sm text-green-700"><%= success %></p>
+                                        <p class="mt-2 text-sm">
+                                            <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-800">Click here to login</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
+
             <form action="/user/register" method="POST" class="space-y-4">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
@@ -60,7 +91,7 @@
 
             <p class="mt-4 text-sm text-center text-gray-600">
                 Already have an account?
-                <a href="/" class="text-indigo-600 hover:text-indigo-800">Sign in</a>
+                <a href="/login" class="text-indigo-600 hover:text-indigo-800">Sign in</a>
             </p>
         </main>
     </body>

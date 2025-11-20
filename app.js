@@ -33,10 +33,12 @@ app.post('/profile', upload.single('uploaded_file'), function (req, res, next) {
 
 
 app.get("/register", (req,res)=>{
-    res.render("register")
+    const {error, success} = req.query;
+    res.render("register", {error, success})
 })
 app.get("/login", (req,res)=>{
-    res.render("login")
+      const {error, success} = req.query;
+    res.render("login", {error, success})
 })
 
 app.use("/user", userRouter)

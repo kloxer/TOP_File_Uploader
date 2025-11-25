@@ -9,16 +9,41 @@ const bcrypt = require('bcrypt');
 
 
 async function login (req,res) {
-        const user = {id:1, name:"jon"}
         const username = req.body.username;
+
         const password = req.body.password;
 
-         jwt.sign({ user:user}, process.env.JWTSECRET, { algorithm: 'HS256' }, function(err, token) {
-            if (err ){
-                return res.status(500).json({msg:"Error generating token"})
+        try{
+            const user = await userDb.findUser(username)
+            if (!user){
+                return res.status(404).redirect('/login?error=User%20not%20found')
             }
-            return res.status(200).json({msg:"Logging in", token:token});
-            });
+            if (await bcrypt.compare(password, user.password)){ //Needs the await because it's async
+                jwt.sign({ userId:user.id}, process.env.JWTSECRET, { algorithm: 'HS256' }, function(err, token) {
+                    if (err ){
+                        return res.status(500).redirect('/login?error=Error%20generating%20token')
+                    }
+
+                    res.cookie('authToken', token, {
+                        httpOnly: true,  // Prevents access via JavaScript
+                        // secure: process.env.NODE_ENV === 'production',  // Ensures cookie is sent over HTTPS
+                        sameSite: 'Strict',  // Mitigates CSRF attacks
+                        maxAge: 3600000  // Token expiration (1 hour)
+                        });
+
+                    return res.status(200).redirect('/?success=Logged%20in');
+                });
+            } 
+            else{
+                return res.status(401).redirect('/login?error=Invalid%20Password')
+
+            }
+            
+        }
+        catch(err){
+            return res.status(500).redirect(`/login?error=${err}`)
+        }
+
             
 }
 

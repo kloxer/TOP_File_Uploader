@@ -1,9 +1,9 @@
 const express = require("express")
-
+  const cookieParser = require('cookie-parser');
 const app = express();
 // var cors = require('cors')
 require('dotenv').config()
-const passport = require('./config/passport');  
+const passport = require('./config/passport.js');  
 
 // app.use(cors())
 const userRouter = require("./routes/userRouter")
@@ -12,11 +12,15 @@ const userRouter = require("./routes/userRouter")
 app.set('view engine', 'ejs'); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 const PORT = process.env.PORT
 
-app.get("/", (req,res)=> {
-    res.render("index")
+app.get("/", passport.authenticate('jwt', { failureRedirect: '/login' , session:false}),  (req,res)=> {
+    const {success} = req.query;
+    console.log(success)
+    res.render("index", {success})
 })
 
 
@@ -38,6 +42,7 @@ app.get("/register", (req,res)=>{
 })
 app.get("/login", (req,res)=>{
       const {error, success} = req.query;
+
     res.render("login", {error, success})
 })
 

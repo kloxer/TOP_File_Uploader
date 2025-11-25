@@ -9,7 +9,19 @@
     <body class="bg-gray-50 min-h-screen flex items-center justify-center">
         <main class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
             <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Sign in to your account</h1>
-
+                        <% if (error) { %>
+                            <div role="alert" class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+                                <div class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.68-1.36 3.445 0l5.516 9.81A1.75 1.75 0 0116.99 16H3.01a1.75 1.75 0 01-1.228-2.091l5.475-9.81zM10 12a1 1 0 100 2 1 1 0 000-2zm.75-6.75a.75.75 0 10-1.5 0v4.5a.75.75 0 001.5 0v-4.5z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-red-800">There was a problem</p>
+                                        <p class="mt-1 text-sm text-red-700"><%= error %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
             <form action="/user/login" method="POST" class="space-y-4">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Username</label>

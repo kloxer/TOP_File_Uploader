@@ -24,7 +24,6 @@ const User = require("../models/userDb")
 
 passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
-        console.log(jwt_payload)
       const user = await User.findUserbyId(jwt_payload.userId); // I had to switch sub, to userId!! That's what I signed
         if (user) {
             return done(null, user);

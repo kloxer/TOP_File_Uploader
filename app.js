@@ -27,6 +27,7 @@ app.get("/", passport.authenticate('jwt', { failureRedirect: '/login' , session:
 //MULTER UPLOADED FILES
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
+
 app.post('/profile', upload.single('uploaded_file'), function (req, res, next) {
   console.log("uploadinggg")
   // req.file is the `avatar` file
